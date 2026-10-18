@@ -1,0 +1,546 @@
+<title>Makhaya Nqaba IS2 Tutor E-Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky index on the left, one short page at a time on the right. Palette taken from the Walter Sisulu University maroon, amber, green, lilac and coral; dark maroon first, light variant second. */
+:root {
+  --bg: #2A090B;
+  --surface: #3E1113;
+  --surface-2: #4F1517;
+  --fg: #F3EDEA;
+  --muted: #CDB3AD;
+  --line: #66292B;
+  --accent: #EBA747;
+  --accent-ink: #2A090B;
+  --note: #35100F;
+  --c1: #EBA747; --c2: #78A877; --c3: #B99AD0; --c4: #E4776F; --c5: #BDAB6E; --c6: #DE6E3E;
+  --r1: #E49A3A; --r2: #5B7A5A; --r3: #A98BBF; --r4: #D4635D; --r5: #9A8C5A; --r6: #C4562A; --r7: #9B1C1F;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #F4F0EF; --surface: #FFFFFF; --surface-2: #F9EDEA; --fg: #2A090B; --muted: #6A4848;
+    --line: #E3D5D2; --accent: #8E1B1F; --accent-ink: #FFFFFF; --note: #F8ECE9;
+    --c1: #A8650C; --c2: #3E6B40; --c3: #7552A0; --c4: #B23F39; --c5: #7B6A2B; --c6: #AD4519;
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #F4F0EF; --surface: #FFFFFF; --surface-2: #F9EDEA; --fg: #2A090B; --muted: #6A4848;
+  --line: #E3D5D2; --accent: #8E1B1F; --accent-ink: #FFFFFF; --note: #F8ECE9;
+  --c1: #A8650C; --c2: #3E6B40; --c3: #7552A0; --c4: #B23F39; --c5: #7B6A2B; --c6: #AD4519;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.65;
+  padding-inline: 1rem;
+}
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+/* Ribbon: the six palette colours as slanted stripes */
+.ribbon {
+  height: .6rem; border-radius: 999px;
+  background: linear-gradient(90deg, var(--r1) 0 16.6%, var(--r2) 0 33.3%, var(--r3) 0 50%, var(--r4) 0 66.6%, var(--r5) 0 83.3%, var(--r6) 0);
+}
+
+.shell {
+  max-width: 78rem; margin-inline: auto;
+  display: grid; grid-template-columns: 16.5rem minmax(0, 1fr); gap: 3rem;
+  padding-block: 1.5rem 3rem;
+}
+
+/* Index */
+.index {
+  position: sticky; top: env(safe-area-inset-top, 0px);
+  align-self: start; max-height: 100vh; overflow-y: auto;
+  padding-block: 1rem; display: flex; flex-direction: column; gap: 1.25rem; min-width: 0;
+}
+.brand { display: flex; flex-direction: column; gap: .5rem; }
+.brand b { font-family: var(--font-display); font-size: 1.35rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
+.brand span { font-family: var(--font-mono); font-size: .72rem; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+.index ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .1rem; }
+.index a.nav {
+  display: grid; grid-template-columns: 1.9rem 1fr; align-items: baseline;
+  padding: .45rem .7rem; border-radius: 10px; text-decoration: none; color: var(--muted);
+  font-size: .94rem; line-height: 1.35;
+}
+.index a.nav i { font-style: normal; font-family: var(--font-mono); font-size: .72rem; }
+.index a.nav:hover { color: var(--fg); background: var(--surface); }
+.index a.nav[aria-current="page"] { color: var(--fg); background: var(--surface-2); font-weight: 600; }
+.theme-btn {
+  align-self: flex-start; font: inherit; font-size: .85rem; color: var(--muted);
+  background: none; border: 1px solid var(--line); border-radius: 999px; padding: .35rem .9rem; cursor: pointer;
+}
+.theme-btn:hover { color: var(--fg); border-color: var(--muted); }
+.topbar { display: none; }
+
+/* Pages */
+main { min-width: 0; padding-block: 1rem; }
+.page { display: none; max-width: 46rem; --pc: var(--c1); }
+.page.active { display: block; animation: rise .35s ease both; }
+.page[data-c="2"] { --pc: var(--c2); } .page[data-c="3"] { --pc: var(--c3); }
+.page[data-c="4"] { --pc: var(--c4); } .page[data-c="5"] { --pc: var(--c5); } .page[data-c="6"] { --pc: var(--c6); }
+@keyframes rise { from { opacity: .001; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .page.active { animation: none; } }
+
+.eyebrow { display: flex; align-items: center; gap: .6rem; font-family: var(--font-mono); font-size: .76rem; letter-spacing: .09em; text-transform: uppercase; color: var(--pc); margin: 0 0 .9rem; }
+.eyebrow::before { content: ""; width: 1.6rem; height: .3rem; border-radius: 99px; background: var(--pc); }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; letter-spacing: -.02em; }
+h1 { font-size: clamp(2.1rem, 5.5vw, 3.3rem); line-height: 1.04; margin: 0 0 1.25rem; font-weight: 800; }
+h2 { font-size: 1.4rem; line-height: 1.2; margin: 2.5rem 0 .8rem; font-weight: 700; }
+h3 { font-size: 1.1rem; margin: 0 0 .35rem; font-weight: 700; }
+p { margin: 0 0 1rem; max-width: 62ch; }
+.lead { font-size: 1.22rem; line-height: 1.55; }
+.muted { color: var(--muted); }
+em.book { font-style: italic; }
+
+/* Cards */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(14.5rem, 1fr)); gap: 1rem; margin: 1.25rem 0 1.5rem; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 1.2rem 1.3rem; min-width: 0; }
+.card p { font-size: .98rem; margin: 0 0 .5rem; }
+.card p:last-child { margin-bottom: 0; }
+.tag { display: inline-block; font-family: var(--font-mono); font-size: .7rem; letter-spacing: .07em; text-transform: uppercase; color: var(--pc); margin-bottom: .55rem; }
+
+/* Home */
+.hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 2.5rem; align-items: end; margin-bottom: 2.5rem; }
+.hero h1 { font-size: clamp(2.8rem, 8vw, 5rem); line-height: .95; margin-bottom: 1rem; }
+.hero h1 span { color: var(--accent); }
+.hero .sub { font-size: 1.15rem; color: var(--muted); margin-bottom: 1.25rem; }
+.chips { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0 0 1.5rem; padding: 0; list-style: none; }
+.chips li { font-size: .85rem; padding: .3rem .85rem; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); }
+.photo { aspect-ratio: 4 / 5; max-width: 100%; border-radius: 999px 999px 24px 24px; overflow: hidden; background: var(--surface-2); border: 1px solid var(--line); }
+.photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block; }
+.btn { display: inline-block; text-decoration: none; font-weight: 600; background: var(--accent); color: var(--accent-ink); padding: .65rem 1.2rem; border-radius: 999px; }
+.btn:hover { filter: brightness(1.08); }
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: .75rem; list-style: none; padding: 0; margin: 0; }
+.tiles a { display: flex; flex-direction: column; gap: .2rem; height: 100%; padding: .9rem 1rem; text-decoration: none; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 16px; transition: transform .15s ease, border-color .15s ease; }
+.tiles a:hover { border-color: var(--accent); transform: translateY(-2px); }
+.tiles a span { font-family: var(--font-mono); font-size: .72rem; color: var(--muted); }
+.tiles a b { font-family: var(--font-display); font-weight: 500; font-size: 1.05rem; line-height: 1.25; }
+@media (prefers-reduced-motion: reduce) { .tiles a { transition: none; } .tiles a:hover { transform: none; } }
+
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 1rem; margin: 0 0 2.5rem; }
+.facts div { padding: 0 0 0 1rem; border-left: 4px solid var(--accent); min-width: 0; }
+.facts dt { font-family: var(--font-mono); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.facts dd { margin: .15rem 0 0; font-weight: 600; }
+
+/* Parts */
+.quote { border-left: 4px solid var(--pc); padding: .2rem 0 .2rem 1.1rem; margin: 1.5rem 0; font-family: var(--font-display); font-size: 1.4rem; line-height: 1.3; font-weight: 500; max-width: 36ch; }
+.chapters { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: .6rem; list-style: none; margin: 1rem 0 1.5rem; padding: 0; }
+.chapters li { display: grid; grid-template-columns: 2.6rem minmax(0, 1fr); gap: .5rem; align-items: baseline; padding: .75rem .9rem; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; font-size: .95rem; line-height: 1.35; }
+.chapters b { font-family: var(--font-mono); font-size: .75rem; color: var(--pc); font-weight: 500; }
+.ticks { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: .5rem; max-width: 62ch; }
+.ticks li { padding-left: 1.5rem; position: relative; }
+.ticks li::before { content: ""; position: absolute; left: 0; top: .6em; width: .7rem; height: .3rem; border-radius: 99px; background: var(--pc); }
+
+.person { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 1.25rem; align-items: start; margin: 1.25rem 0; padding: 1.1rem; background: var(--surface); border: 1px solid var(--line); border-radius: 24px; }
+.person img { width: 100%; aspect-ratio: 1 / 1.15; object-fit: cover; object-position: 50% 25%; border-radius: 16px; display: block; }
+.person > div { min-width: 0; }
+.person h3 { margin: 0; font-size: 1.2rem; }
+.person .role { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .05em; text-transform: uppercase; color: var(--pc); margin: .2rem 0 .6rem; }
+.person p { font-size: .98rem; }
+.person p:last-child { margin-bottom: 0; }
+
+figure.shot { margin: 1.5rem 0; max-width: 34rem; }
+figure.shot img { display: block; width: 100%; height: auto; border-radius: 22px; border: 1px solid var(--line); }
+figure.shot figcaption { font-size: .88rem; color: var(--muted); margin-top: .5rem; }
+
+.phone { max-width: 21rem; padding: .55rem; background: var(--surface-2); border: 1px solid var(--line); border-radius: 32px; }
+.phone img { display: block; width: 100%; height: auto; border-radius: 24px; }
+.fb { display: grid; grid-template-columns: minmax(0, 21rem) minmax(0, 1fr); gap: 2rem; align-items: start; margin: 1rem 0 1.5rem; }
+.fb > div { min-width: 0; }
+
+.photos { display: grid; grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr)); gap: 1rem; margin: 1.25rem 0 1.5rem; }
+.photos figure { margin: 0; min-width: 0; }
+.photos img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 20px; border: 1px solid var(--line); }
+.photos .land img { aspect-ratio: 3 / 2; }
+.photos figcaption { font-size: .85rem; color: var(--muted); margin-top: .4rem; }
+
+.skills { display: flex; flex-wrap: wrap; gap: .5rem; list-style: none; margin: 0 0 1rem; padding: 0; }
+.skills li { padding: .4rem .95rem; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); font-size: .95rem; }
+
+.slot { border: 1.5px dashed var(--line); border-radius: 16px; background: var(--note); padding: .9rem 1.1rem; margin: 1.5rem 0; max-width: 62ch; }
+.slot b { display: block; font-family: var(--font-mono); font-size: .72rem; letter-spacing: .07em; text-transform: uppercase; color: var(--accent); margin-bottom: .25rem; font-weight: 500; }
+.slot p { margin: 0; font-size: .95rem; color: var(--muted); }
+.signoff { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; margin-top: 2rem; max-width: 24ch; }
+
+/* Pager */
+.pager { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--line); max-width: 46rem; }
+.pager a { display: flex; flex-direction: column; gap: .1rem; text-decoration: none; color: var(--fg); min-width: 0; padding: .65rem 1rem; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+.pager a:hover { border-color: var(--accent); }
+.pager a span { font-family: var(--font-mono); font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.pager a b { font-family: var(--font-display); font-weight: 500; }
+.pager .next { margin-left: auto; text-align: right; }
+
+/* Phone */
+@media (max-width: 56rem) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 0; padding-block: 0 2rem; }
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+    background: var(--bg); border-bottom: 1px solid var(--line); padding-block: .7rem;
+  }
+  .topbar b { font-family: var(--font-display); font-size: 1.05rem; }
+  .topbar button { font: inherit; font-size: .9rem; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: .35rem 1rem; cursor: pointer; }
+  .index { display: none; position: static; max-height: none; padding-block: 1rem; border-bottom: 1px solid var(--line); }
+  .index.open { display: flex; }
+  .index .brand { display: none; }
+  main { padding-block: 1.5rem; }
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+  .photo { order: -1; aspect-ratio: 1 / 1; max-width: 22rem; }
+  .fb { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 30rem) {
+  .person { grid-template-columns: minmax(0, 1fr); }
+  .person img { max-width: 11rem; }
+}
+</style>
+
+<div class="shell">
+  <div class="topbar">
+    <b>Makhaya Nqaba</b>
+    <button type="button" id="menu-btn" aria-expanded="false" aria-controls="index">Pages</button>
+  </div>
+
+  <nav class="index" id="index" aria-label="Portfolio pages">
+    <div class="brand"><b>Makhaya<br>Nqaba</b><div class="ribbon" style="width:5rem"></div><span>IS2 Tutor · WSU 2026</span></div>
+    <ol>
+      <li><a class="nav" href="#home"><i>01</i>Home</a></li>
+      <li><a class="nav" href="#personal"><i>02</i>Personal Statement</a></li>
+      <li><a class="nav" href="#module"><i>03</i>Module Details</a></li>
+      <li><a class="nav" href="#training"><i>04</i>Training &amp; Development</a></li>
+      <li><a class="nav" href="#delivery"><i>05</i>Tutorial Delivery</a></li>
+      <li><a class="nav" href="#technology"><i>06</i>Integration of Technology</a></li>
+      <li><a class="nav" href="#reflections"><i>07</i>Reflections &amp; Lessons</a></li>
+      <li><a class="nav" href="#gallery"><i>08</i>Gallery / Evidence</a></li>
+      <li><a class="nav" href="#feedback"><i>09</i>Student Feedback</a></li>
+      <li><a class="nav" href="#growth"><i>10</i>Achievements &amp; Growth</a></li>
+      <li><a class="nav" href="#future"><i>11</i>Conclusion &amp; Future Goals</a></li>
+    </ol>
+    <button type="button" class="theme-btn" id="theme-btn">Switch theme</button>
+  </nav>
+
+  <main id="main" tabindex="-1">
+
+    <!-- 1 HOME -->
+    <section class="page" id="home" data-c="1">
+      <div class="hero">
+        <div>
+          <p class="eyebrow">Information Systems 2 · E-Portfolio</p>
+          <h1>Makhaya <span>Nqaba</span></h1>
+          <p class="sub">Walter Sisulu University · 2026</p>
+          <ul class="chips"><li>IS2 Tutor</li><li>Diploma in ICT: Application Development</li><li>Final year</li></ul>
+          <a class="btn" href="#personal">Start reading</a>
+        </div>
+        <div class="photo"><img src="img/makhaya-outdoor.jpg" alt="Me on a balcony at sunset, wearing a cap and a blue polo shirt" width="1000" height="1333"></div>
+      </div>
+      <div class="ribbon" style="margin-bottom:2rem"></div>
+      <p class="lead">Welcome to my e-portfolio. It documents my year as an Information Systems 2 tutor: what I did, what I learnt and where I still want to grow.</p>
+      <p>Tutoring has been more than helping students with content. It has built my confidence, communication, patience and respect for teaching.</p>
+      <dl class="facts">
+        <div><dt>Module</dt><dd>Information Systems 2</dd></div>
+        <div><dt>Content</dt><dd>Chapters 1–9</dd></div>
+        <div><dt>Delivery</dt><dd>Potsdam Campus and Teams</dd></div>
+        <div><dt>Partner</dt><dd>Zizile Jako</dd></div>
+      </dl>
+      <ul class="tiles">
+        <li><a href="#personal"><span>02</span><b>Personal Statement</b></a></li>
+        <li><a href="#module"><span>03</span><b>Module Details</b></a></li>
+        <li><a href="#training"><span>04</span><b>Training &amp; Development</b></a></li>
+        <li><a href="#delivery"><span>05</span><b>Tutorial Delivery</b></a></li>
+        <li><a href="#technology"><span>06</span><b>Integration of Technology</b></a></li>
+        <li><a href="#reflections"><span>07</span><b>Reflections &amp; Lessons Learnt</b></a></li>
+        <li><a href="#gallery"><span>08</span><b>Gallery / Evidence</b></a></li>
+        <li><a href="#feedback"><span>09</span><b>Student Feedback</b></a></li>
+        <li><a href="#growth"><span>10</span><b>Achievements &amp; Growth</b></a></li>
+        <li><a href="#future"><span>11</span><b>Conclusion &amp; Future Goals</b></a></li>
+      </ul>
+    </section>
+
+    <!-- 2 PERSONAL -->
+    <section class="page" id="personal" data-c="2">
+      <p class="eyebrow">02 · Personal Statement</p>
+      <h1>Who I am</h1>
+      <p class="lead">I am a final-year Diploma in ICT (Application Development) student at Walter Sisulu University. My interest in technology drives me to look for chances to grow, and in 2026 that included becoming an IS2 tutor.</p>
+      <figure class="shot"><img src="img/makhaya-venue.jpg" alt="Me at a Walter Sisulu University venue, wearing a university lanyard" width="1000" height="667" loading="lazy"><figcaption>Me at a Walter Sisulu University venue, 2026.</figcaption></figure>
+
+      <h2>Why I became a tutor</h2>
+      <p>I wanted to help other students while learning myself. I know how hard technical and theoretical content can feel, so I value clear explanations and patient support. Tutoring also let me build skills beyond the classroom: communication, confidence and teamwork.</p>
+
+      <h2>My teaching philosophy</h2>
+      <p class="quote">Students should understand concepts, not just memorise them.</p>
+      <p>Students learn differently, so I aim to explain clearly, help with exercises and encourage them to engage with the content.</p>
+
+      <h2>My goals</h2>
+      <ul class="ticks">
+        <li>Improve my communication and presentation skills.</li>
+        <li>Be more confident when addressing groups.</li>
+        <li>Help students understand Information Systems 2.</li>
+        <li>Keep developing professionally. Tutoring has also made lecturing something I might pursue one day.</li>
+      </ul>
+    </section>
+
+    <!-- 3 MODULE -->
+    <section class="page" id="module" data-c="3">
+      <p class="eyebrow">03 · Module Details</p>
+      <h1>About Information Systems 2</h1>
+      <p class="lead">The module covers how information systems are investigated, how user requirements are identified, and how systems are modelled and designed.</p>
+      <p>I supported Chapters 1–9 of <em class="book">Systems Analysis and Design in a Changing World</em>, 7th edition, by Satzinger, Jackson and Burd.</p>
+      <ol class="chapters">
+        <li><b>Ch 1</b>An Overview of Systems Analysis and Design</li>
+        <li><b>Ch 2</b>Investigating System Requirements</li>
+        <li><b>Ch 3</b>Identifying User Stories and Use Cases</li>
+        <li><b>Ch 4</b>Domain Modelling</li>
+        <li><b>Ch 5</b>Use Case Modelling</li>
+        <li><b>Ch 6</b>Foundations for Systems Design</li>
+        <li><b>Ch 7</b>Defining the System Architecture</li>
+        <li><b>Ch 8</b>Designing the User Interface</li>
+        <li><b>Ch 9</b>Designing the Database</li>
+      </ol>
+
+      <h2>My lecturer</h2>
+      <div class="person">
+        <img src="img/lecturer.jpg" alt="Portrait of Dr Memory Ranga" width="507" height="484" loading="lazy">
+        <div>
+          <h3>Dr Memory Ranga</h3>
+          <p class="role">Senior Lecturer · Walter Sisulu University</p>
+          <p>Dr Ranga is my IS2 lecturer and guided me through this year. I supported her with test invigilation and with marking under her supervision.</p>
+        </div>
+      </div>
+
+      <h2>My responsibilities</h2>
+      <ul class="ticks">
+        <li>Explaining module topics and helping with exercises.</li>
+        <li>Invigilating tests.</li>
+        <li>Marking under the lecturer's supervision.</li>
+      </ul>
+    </section>
+
+    <!-- 4 TRAINING -->
+    <section class="page" id="training" data-c="4">
+      <p class="eyebrow">04 · Training &amp; Development</p>
+      <h1>Learning as I went</h1>
+      <p class="lead">My development came from formal training, online learning and working with other tutors.</p>
+      <div class="cards">
+        <div class="card"><span class="tag">Semester 1</span><h3>Tutor training</h3><p class="muted">Title and date to be confirmed.</p></div>
+        <div class="card"><span class="tag">Semester 2</span><h3>Tutor training</h3><p><b>18 August 2026, 08:30</b><br>Potsdam Campus</p></div>
+        <div class="card"><span class="tag">Online</span><h3>Online register training</h3><p class="muted">Implementing an online register. Title and date to be confirmed.</p></div>
+      </div>
+      <p>Beyond the sessions, I learnt from fellow tutors by sharing experiences and watching different approaches. Applying what I learnt showed me how much preparation, clear communication and confidence matter.</p>
+      <h2>Skills I built</h2>
+      <ul class="skills"><li>Communication</li><li>Teamwork</li><li>Organisation</li><li>Presentation</li><li>Reflection</li></ul>
+      <div class="slot"><b>Evidence to be added</b><p>Invitations, attendance records and notes from the training sessions.</p></div>
+    </section>
+
+    <!-- 5 DELIVERY -->
+    <section class="page" id="delivery" data-c="5">
+      <p class="eyebrow">05 · Tutorial Delivery</p>
+      <h1>How I supported students</h1>
+      <p class="lead">I supported IS2 students through Chapters 1–9, explaining topics, helping with exercises and building their understanding of the module.</p>
+      <div class="cards">
+        <div class="card"><span class="tag">In person</span><h3>Potsdam Campus</h3><p>Venues depended on availability.</p></div>
+        <div class="card"><span class="tag">Online</span><h3>Microsoft Teams</h3><p>Used for online tutorials.</p></div>
+      </div>
+      <p>I try to connect theory with practical examples. For instance, in user stories and use cases it helps to separate a user's goal from the system activity that fulfils it. In interface design, students need to see how design decisions change the way people use a system.</p>
+
+      <h2>Leading alone and together</h2>
+      <p>I led some tutorials on my own and delivered others with my tutor partner. Leading built my confidence in presenting to a group. Sharing sessions taught me about preparation, communication and teamwork.</p>
+      <div class="person">
+        <img src="img/zizile.jpg" alt="Portrait of Zizile Jako" width="924" height="1366" loading="lazy">
+        <div>
+          <h3>Zizile Jako</h3>
+          <p class="role">My tutor partner · Advanced Diploma in ICT (Application Development)</p>
+          <p>Zizile is a humble person, and I could not have asked for a better partner. Working with her showed me the value of teamwork, mutual respect and sharing responsibility, and I learnt from someone who is balancing her own studies while helping others learn.</p>
+        </div>
+      </div>
+
+      <h2>My growth</h2>
+      <p>At the start of the year I struggled to explain concepts in front of an audience. I am now more comfortable with larger groups, though I still want to improve my articulation and how I organise my explanations.</p>
+      <p class="quote">Different students need different explanations.</p>
+      <p>That is the idea I want to keep working on, in person and online.</p>
+      <div class="slot"><b>Evidence to be added</b><p>Tutorial notes, slides, exercise sheets or lesson plans I used.</p></div>
+    </section>
+
+    <!-- 6 TECHNOLOGY -->
+    <section class="page" id="technology" data-c="6">
+      <p class="eyebrow">06 · Integration of Technology</p>
+      <h1>Digital tools I used</h1>
+      <p class="lead">Technology supported my preparation, my tutorials and my communication with students.</p>
+      <div class="cards">
+        <div class="card"><span class="tag">Prepare</span><h3>PowerPoint and Word</h3><p>For organising my academic work and presenting information in a way that is easier to follow.</p></div>
+        <div class="card"><span class="tag">Teach online</span><h3>Microsoft Teams</h3><p>For online tutorials, so I could support students remotely when sessions were not at Potsdam Campus.</p></div>
+        <div class="card"><span class="tag">Communicate</span><h3>WhatsApp</h3><p>For staying in touch with students and sometimes receiving their feedback.</p></div>
+      </div>
+      <p>Using both in-person and online approaches taught me to support students through different channels. Online platforms extend learning, and in-person sessions give another way to explain and help.</p>
+      <p>Next, I want to get better at organising tutoring activities and making learning resources easy to reach.</p>
+      <div class="slot"><b>Evidence to be added</b><p>PowerPoint slides, Word documents and Teams screenshots.</p></div>
+    </section>
+
+    <!-- 7 REFLECTIONS -->
+    <section class="page" id="reflections" data-c="1">
+      <p class="eyebrow">07 · Reflections &amp; Lessons Learnt</p>
+      <h1>From nervous to more confident</h1>
+      <p class="lead">At the start of the year I was afraid of speaking in front of an audience. Tutoring has shown me that confidence grows through experience, if I keep putting myself in situations where I can learn.</p>
+      <div class="cards">
+        <div class="card"><span class="tag">Challenge</span><h3>Time management</h3><p>As a final-year student, I had to plan carefully and not underestimate preparation time.</p></div>
+        <div class="card"><span class="tag">Challenge</span><h3>Low attendance</h3><p>Empty seats could be discouraging. I cannot control attendance, so I focus on making my support useful and accessible.</p></div>
+        <div class="card"><span class="tag">Still improving</span><h3>Articulation</h3><p>I want to explain ideas more clearly, organise my explanations better and handle questions from a group more comfortably.</p></div>
+      </div>
+      <h2>What I have learnt</h2>
+      <p>Knowing a subject and teaching it are not the same thing. A tutor must also communicate, listen, prepare and recognise when an explanation needs another approach.</p>
+      <p class="quote">I do not need to be a perfect tutor from the start, but I must stay willing to learn.</p>
+    </section>
+
+    <!-- 8 GALLERY -->
+    <section class="page" id="gallery" data-c="2">
+      <p class="eyebrow">08 · Gallery / Evidence</p>
+      <h1>My year in pictures</h1>
+      <p class="lead">Photos of the people and places behind my tutoring year. Documents and screenshots will be added as I confirm them.</p>
+      <div class="photos">
+        <figure><img src="img/makhaya-outdoor.jpg" alt="Me on a balcony at sunset" loading="lazy" width="1000" height="1333"><figcaption>Me</figcaption></figure>
+        <figure class="land"><img src="img/makhaya-venue.jpg" alt="Me at a Walter Sisulu University venue" loading="lazy" width="1000" height="667"><figcaption>Me at a WSU venue</figcaption></figure>
+        <figure><img src="img/zizile.jpg" alt="Zizile Jako" loading="lazy" width="924" height="1366"><figcaption>Zizile Jako, my tutor partner</figcaption></figure>
+        <figure><img src="img/lecturer.jpg" alt="Dr Memory Ranga" loading="lazy" width="507" height="484"><figcaption>Dr Memory Ranga, my IS2 lecturer</figcaption></figure>
+      </div>
+      <h2>Evidence I am collecting</h2>
+      <ul class="ticks">
+        <li>Slides, notes and worksheets I prepared.</li>
+        <li>Training invitations and attendance records.</li>
+        <li>Microsoft Teams screenshots.</li>
+      </ul>
+      <p class="muted">Anything that shows private details will have names and numbers removed first.</p>
+    </section>
+
+    <!-- 9 FEEDBACK -->
+    <section class="page" id="feedback" data-c="3">
+      <p class="eyebrow">09 · Student Feedback</p>
+      <h1>What students told me</h1>
+      <p class="lead">I did not use polls or survey links. My feedback came from students themselves, spoken in class.</p>
+
+      <h2>Spoken feedback in class</h2>
+      <p>Students told me whether they understood the lesson or not. Some praised the tutorials. Others gave constructive criticism: they could see that I knew the content, but I was not always expressing it clearly.</p>
+      <p class="quote">I know the content, but I need to express it more clearly.</p>
+      <p>I take that comment seriously. It is the reason articulation and organising my explanations are the skills I am working on most.</p>
+
+      <h2>Written feedback</h2>
+      <p>Some students also messaged me on WhatsApp, both positive and negative. Several of them used disappearing messages, so those messages are gone and I cannot show them. This is the one message I still have.</p>
+      <div class="fb">
+        <div class="phone"><img src="img/feedback.jpg" alt="WhatsApp message from a student dated 12 June 2026, with the name and number blurred. The student says it was their first time attending, they will keep attending, and they now understand UML, use case and domain model diagrams much better." width="845" height="1400" loading="lazy"></div>
+        <div>
+          <span class="tag">WhatsApp · 12 June 2026</span>
+          <h3>A first-time attendee</h3>
+          <p>After attending for the first time, this student said they understood UML, use case and domain model diagrams much better and would keep coming. The name and number are hidden.</p>
+        </div>
+      </div>
+      <h2>My commitment</h2>
+      <p>I want to stay open to feedback, good or bad, and keep improving how I explain things.</p>
+    </section>
+
+    <!-- 10 GROWTH -->
+    <section class="page" id="growth" data-c="4">
+      <p class="eyebrow">10 · Achievements &amp; Professional Growth</p>
+      <h1>Growth beyond the classroom</h1>
+      <p class="lead">My biggest progress is confidence. I started the year nervous about addressing an audience and ended it more comfortable in front of a group.</p>
+      <p>I also took on responsibilities beyond explaining content, including invigilating tests and marking under my lecturer's supervision. Training and fellow tutors showed me how much collaboration, preparation and continuous development matter.</p>
+      <h2>Skills I am developing</h2>
+      <ul class="skills">
+        <li>Communication and presentation</li><li>Explaining technical concepts</li><li>Time management</li><li>Teamwork</li><li>Professionalism</li><li>Reflection</li>
+      </ul>
+      <h2>Effect on my career goals</h2>
+      <p>My main direction is still Application Development and ICT. Tutoring has opened up lecturing as a possible path, and made me think about how I could share what I learn in development with future students.</p>
+    </section>
+
+    <!-- 11 FUTURE -->
+    <section class="page" id="future" data-c="5">
+      <p class="eyebrow">11 · Conclusion &amp; Future Goals</p>
+      <h1>Looking ahead</h1>
+      <p class="lead">Being an IS2 tutor in 2026 has been an important part of my academic and personal growth.</p>
+      <p>It challenged me to communicate with more confidence, balance competing responsibilities and think about how people understand information. I still need to improve my articulation, my time management and my motivation when attendance is low, and I will treat those as chances to grow.</p>
+      <h2>Next steps</h2>
+      <ul class="ticks">
+        <li>Finish my studies.</li>
+        <li>Keep building my Application Development and ICT skills.</li>
+        <li>Stay open to opportunities to share what I know.</li>
+      </ul>
+      <p>Tutoring taught me that professional growth is not only technical. It is also communication, patience, responsibility and a willingness to learn. I am grateful for the opportunity.</p>
+      <p class="signoff">Thank you for visiting my e-portfolio.</p>
+    </section>
+
+    <div class="pager" id="pager"></div>
+  </main>
+</div>
+
+<script>
+(function () {
+  var pages = [
+    ['home', 'Home'], ['personal', 'Personal Statement'], ['module', 'Module Details'],
+    ['training', 'Training & Development'], ['delivery', 'Tutorial Delivery'],
+    ['technology', 'Integration of Technology'], ['reflections', 'Reflections & Lessons Learnt'],
+    ['gallery', 'Gallery / Evidence'], ['feedback', 'Student Feedback'],
+    ['growth', 'Achievements & Growth'], ['future', 'Conclusion & Future Goals']
+  ];
+  var root = document.documentElement;
+  var index = document.getElementById('index');
+  var menuBtn = document.getElementById('menu-btn');
+  var pager = document.getElementById('pager');
+
+  function idx(id) { for (var i = 0; i < pages.length; i++) if (pages[i][0] === id) return i; return 0; }
+  function esc(t) { return t.replace(/&/g, '&amp;'); }
+
+  function show(id) {
+    var i = idx(id);
+    id = pages[i][0];
+    pages.forEach(function (p) {
+      document.getElementById(p[0]).classList.toggle('active', p[0] === id);
+    });
+    var links = index.querySelectorAll('a.nav');
+    for (var k = 0; k < links.length; k++) {
+      if (links[k].getAttribute('href') === '#' + id) links[k].setAttribute('aria-current', 'page');
+      else links[k].removeAttribute('aria-current');
+    }
+    var html = '';
+    if (i > 0) html += '<a class="prev" href="#' + pages[i - 1][0] + '"><span>Previous</span><b>' + esc(pages[i - 1][1]) + '</b></a>';
+    if (i < pages.length - 1) html += '<a class="next" href="#' + pages[i + 1][0] + '"><span>Next</span><b>' + esc(pages[i + 1][1]) + '</b></a>';
+    pager.innerHTML = html;
+    index.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    window.scrollTo(0, 0);
+  }
+
+  function fromHash() { show((location.hash || '').replace('#', '') || 'home'); }
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
+
+  menuBtn.addEventListener('click', function () {
+    var open = index.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var cur = idx((location.hash || '#home').replace('#', ''));
+    if (e.key === 'ArrowRight' && cur < pages.length - 1) location.hash = pages[cur + 1][0];
+    if (e.key === 'ArrowLeft' && cur > 0) location.hash = pages[cur - 1][0];
+  });
+
+  document.getElementById('theme-btn').addEventListener('click', function () {
+    var cur = root.getAttribute('data-theme');
+    var dark = cur ? cur === 'dark' : !window.matchMedia('(prefers-color-scheme: light)').matches;
+    var next = dark ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('ep-theme', next); } catch (err) {}
+  });
+  try {
+    var saved = localStorage.getItem('ep-theme');
+    if (saved === 'light' || saved === 'dark') root.setAttribute('data-theme', saved);
+  } catch (err) {}
+})();
+</script>
